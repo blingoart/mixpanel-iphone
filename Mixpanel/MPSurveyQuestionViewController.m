@@ -72,6 +72,7 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
 
 - (void)viewWillLayoutSubviews
 {
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     // Can't use _prompt.bounds here cause it hasn't been calculated yet.
     CGFloat promptWidth = self.view.bounds.size.width - 30; // 2x 15 point horizontal padding on prompt
     CGFloat promptHeight = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation) ? 72 : 48;
@@ -113,6 +114,8 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
     }
     _prompt.font = font;
     _promptHeight.constant = (CGFloat)ceil(promptHeight);
+
+#endif
 }
 
 
@@ -344,9 +347,11 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
 {
     [super viewWillAppear:animated];
     [self registerForKeyboardNotifications];
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     if (UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
         [self.textView becomeFirstResponder];
     }
+#endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -360,7 +365,9 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
 {
     [super viewWillLayoutSubviews];
     self.keyboardAccessoryWidth.constant = self.view.bounds.size.width;
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     self.textViewHeight.constant = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation) ? 72 : 48;
+#endif
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -399,6 +406,7 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
 
 - (void)keyboardWillShow:(NSNotification *)note
 {
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     NSDictionary* info = [note userInfo];
     NSTimeInterval duration = [info[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     UIViewAnimationOptions curve = [info[UIKeyboardAnimationDurationUserInfoKey] unsignedIntegerValue];
@@ -419,6 +427,7 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
                          [self.view layoutIfNeeded];
                      }
                      completion:nil];
+#endif
 }
 
 - (void)keyboardWillHide:(NSNotification *)note

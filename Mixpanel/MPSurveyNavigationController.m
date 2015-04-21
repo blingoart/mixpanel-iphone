@@ -187,8 +187,9 @@
         // reset after being faded out last time
         toController.view.alpha = 1;
 
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
         [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-
+#endif
         NSTimeInterval duration = 0.25;
         [self transitionFromViewController:fromController
                           toViewController:toController
@@ -301,7 +302,9 @@
                                     [toController didMoveToParentViewController:self];
                                     [fromController removeFromParentViewController];
                                     self.currentQuestionController = toController;
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
                                     [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+#endif
                                 }];
         [self updatePageNumber:index];
         [self updateButtons:index];

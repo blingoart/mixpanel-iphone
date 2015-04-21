@@ -10,6 +10,7 @@
 {
 
     UIColor *color;
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
 
     // First try and find the color of the UINavigationBar of the top UINavigationController that is showing now.
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
@@ -46,7 +47,7 @@
         color = [[UITabBar appearance] barTintColor];
     }
 #endif
-
+#endif
     return color;
 }
 

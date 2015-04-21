@@ -35,6 +35,9 @@ static NSString * const kObjectIdentityProviderKey = @"object_identity_provider"
 
 - (NSOperation *)responseCommandWithConnection:(MPABTestDesignerConnection *)connection
 {
+NSOperation *operation;
+
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     __block MPObjectSerializerConfig *serializerConfig = self.configuration;
     __block NSString *imageHash = [self payloadObjectForKey:@"image_hash"];
 
@@ -85,7 +88,7 @@ static NSString * const kObjectIdentityProviderKey = @"object_identity_provider"
         snapshotMessage.serializedObjects = serializedObjects;
         [conn sendMessage:snapshotMessage];
     }];
-
+#endif
     return operation;
 }
 

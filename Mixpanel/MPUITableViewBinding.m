@@ -67,6 +67,7 @@
 
 - (void)execute
 {
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     if (!self.running) {
         NSObject *root = [[UIApplication sharedApplication] keyWindow].rootViewController;
         void (^block)(id, SEL, id, id) = ^(id view, SEL command, UITableView *tableView, NSIndexPath *indexPath) {
@@ -89,6 +90,7 @@
                               named:self.name];
         self.running = true;
     }
+#endif
 }
 
 - (void)stop

@@ -284,7 +284,9 @@ static Mixpanel *sharedInstance = nil;
 #else
         recognizer.numberOfTouchesRequired = 4;
 #endif
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
         [[UIApplication sharedApplication].keyWindow addGestureRecognizer:recognizer];
+#endif
     });
 #endif
 }
@@ -377,7 +379,11 @@ static Mixpanel *sharedInstance = nil;
 
 + (BOOL)inBackground
 {
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     return [UIApplication sharedApplication].applicationState == UIApplicationStateBackground;
+#endif
+
+return NO;
 }
 
 #pragma mark - Encoding/decoding utilities
@@ -784,9 +790,11 @@ static Mixpanel *sharedInstance = nil;
 
 - (void)updateNetworkActivityIndicator:(BOOL)on
 {
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     if (_showNetworkActivityIndicator) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = on;
     }
+#endif
 }
 
 - (void)reachabilityChanged:(SCNetworkReachabilityFlags)flags
@@ -1036,6 +1044,7 @@ static Mixpanel *sharedInstance = nil;
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     MixpanelDebug(@"%@ did enter background", self);
 
     self.taskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
@@ -1058,10 +1067,12 @@ static Mixpanel *sharedInstance = nil;
         }
         self.decideResponseCached = NO;
     });
+#endif
 }
 
 - (void)applicationWillEnterForeground:(NSNotificationCenter *)notification
 {
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     MixpanelDebug(@"%@ will enter foreground", self);
     dispatch_async(self.serialQueue, ^{
         if (self.taskId != UIBackgroundTaskInvalid) {
@@ -1070,6 +1081,7 @@ static Mixpanel *sharedInstance = nil;
             [self updateNetworkActivityIndicator:NO];
         }
     });
+#endif
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification
@@ -1118,10 +1130,14 @@ static Mixpanel *sharedInstance = nil;
 
 + (UIViewController *)topPresentedViewController
 {
+UIViewController *controller;
+
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     UIViewController *controller = [UIApplication sharedApplication].keyWindow.rootViewController;
     while (controller.presentedViewController) {
         controller = controller.presentedViewController;
     }
+#endif
     return controller;
 }
 
@@ -1333,6 +1349,7 @@ static Mixpanel *sharedInstance = nil;
 
 - (void)showSurveyWithObject:(MPSurvey *)survey withAlert:(BOOL)showAlert
 {
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     if (survey) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.currentlyShowingSurvey) {
@@ -1381,6 +1398,7 @@ static Mixpanel *sharedInstance = nil;
     } else {
         MixpanelError(@"%@ cannot show nil survey", self);
     }
+#endif
 }
 
 - (void)showSurveyWithObject:(MPSurvey *)survey
@@ -1564,6 +1582,7 @@ static Mixpanel *sharedInstance = nil;
 
 - (void)notificationController:(MPNotificationViewController *)controller wasDismissedWithStatus:(BOOL)status
 {
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     if (controller == nil || self.currentlyShowingNotification != controller.notification) {
         return;
     }
@@ -1587,6 +1606,7 @@ static Mixpanel *sharedInstance = nil;
     } else {
         [controller hideWithAnimation:YES completion:completionBlock];
     }
+#endif
 }
 
 - (void)trackNotification:(MPNotification *)notification event:(NSString *)event
@@ -1638,6 +1658,7 @@ static Mixpanel *sharedInstance = nil;
 
 - (void)connectToABTestDesigner:(BOOL)reconnect
 {
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     if (self.abtestDesignerConnection && self.abtestDesignerConnection.connected) {
         MixpanelError(@"A/B test designer connection already exists");
     } else {
@@ -1685,6 +1706,7 @@ static Mixpanel *sharedInstance = nil;
                                                                         connectCallback:connectCallback
                                                                         disconnectCallback:disconnectCallback];
     }
+#endif
 }
 
 #pragma mark A/B Testing (Experiment)

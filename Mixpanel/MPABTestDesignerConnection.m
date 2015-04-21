@@ -253,6 +253,7 @@ NSString * const kSessionVariantKey = @"session_variant";
 
 - (void)showConnectedView
 {
+#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
     if(!_recordingView) {
         UIWindow *mainWindow = [[UIApplication sharedApplication] delegate].window;
         _recordingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, mainWindow.frame.size.width, 1.0)];
@@ -260,6 +261,7 @@ NSString * const kSessionVariantKey = @"session_variant";
         [mainWindow addSubview:_recordingView];
         [mainWindow bringSubviewToFront:_recordingView];
     }
+#endif
 }
 
 - (void)hideConnectedView
