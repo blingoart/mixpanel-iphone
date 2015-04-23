@@ -344,7 +344,7 @@
         if ([(UIViewController *)obj presentingViewController]) {
             [result addObject:[(UIViewController *)obj presentingViewController]];
         }
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
         if ([UIApplication sharedApplication].keyWindow.rootViewController == obj) {
             //TODO is there a better way to get the actual window that has this VC
             [result addObject:[UIApplication sharedApplication].keyWindow];

@@ -37,12 +37,12 @@ static NSString * const kObjectIdentityProviderKey = @"object_identity_provider"
 {
 NSOperation *operation;
 
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     __block MPObjectSerializerConfig *serializerConfig = self.configuration;
     __block NSString *imageHash = [self payloadObjectForKey:@"image_hash"];
 
     __weak MPABTestDesignerConnection *weak_connection = connection;
-    NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+    operation = [NSBlockOperation blockOperationWithBlock:^{
         __strong MPABTestDesignerConnection *conn = weak_connection;
 
         // Update the class descriptions in the connection session if provided as part of the message.

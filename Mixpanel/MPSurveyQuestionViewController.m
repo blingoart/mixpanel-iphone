@@ -72,7 +72,7 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
 
 - (void)viewWillLayoutSubviews
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     // Can't use _prompt.bounds here cause it hasn't been calculated yet.
     CGFloat promptWidth = self.view.bounds.size.width - 30; // 2x 15 point horizontal padding on prompt
     CGFloat promptHeight = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation) ? 72 : 48;
@@ -347,7 +347,7 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
 {
     [super viewWillAppear:animated];
     [self registerForKeyboardNotifications];
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     if (UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
         [self.textView becomeFirstResponder];
     }
@@ -365,7 +365,7 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
 {
     [super viewWillLayoutSubviews];
     self.keyboardAccessoryWidth.constant = self.view.bounds.size.width;
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     self.textViewHeight.constant = UIDeviceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation) ? 72 : 48;
 #endif
 }

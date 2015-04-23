@@ -96,7 +96,7 @@
 
 - (void)execute
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     if (!self.running) {
         void (^executeBlock)(id, SEL) = ^(id view, SEL command) {
             NSArray *objects;
@@ -188,7 +188,7 @@
 
 - (BOOL)verifyControlMatchesPath:(id)control
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     NSObject *root = [[UIApplication sharedApplication] keyWindow].rootViewController;
     return [self.path isLeafSelected:control fromRoot:root];
 #endif

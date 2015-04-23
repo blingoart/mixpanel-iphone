@@ -284,7 +284,7 @@ static Mixpanel *sharedInstance = nil;
 #else
         recognizer.numberOfTouchesRequired = 4;
 #endif
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
         [[UIApplication sharedApplication].keyWindow addGestureRecognizer:recognizer];
 #endif
     });
@@ -379,7 +379,7 @@ static Mixpanel *sharedInstance = nil;
 
 + (BOOL)inBackground
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     return [UIApplication sharedApplication].applicationState == UIApplicationStateBackground;
 #endif
 
@@ -790,7 +790,7 @@ return NO;
 
 - (void)updateNetworkActivityIndicator:(BOOL)on
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     if (_showNetworkActivityIndicator) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = on;
     }
@@ -1044,7 +1044,7 @@ return NO;
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     MixpanelDebug(@"%@ did enter background", self);
 
     self.taskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
@@ -1072,7 +1072,7 @@ return NO;
 
 - (void)applicationWillEnterForeground:(NSNotificationCenter *)notification
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     MixpanelDebug(@"%@ will enter foreground", self);
     dispatch_async(self.serialQueue, ^{
         if (self.taskId != UIBackgroundTaskInvalid) {
@@ -1132,8 +1132,8 @@ return NO;
 {
 UIViewController *controller;
 
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
-    UIViewController *controller = [UIApplication sharedApplication].keyWindow.rootViewController;
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
+    controller = [UIApplication sharedApplication].keyWindow.rootViewController;
     while (controller.presentedViewController) {
         controller = controller.presentedViewController;
     }
@@ -1349,7 +1349,7 @@ UIViewController *controller;
 
 - (void)showSurveyWithObject:(MPSurvey *)survey withAlert:(BOOL)showAlert
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     if (survey) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.currentlyShowingSurvey) {
@@ -1582,7 +1582,7 @@ UIViewController *controller;
 
 - (void)notificationController:(MPNotificationViewController *)controller wasDismissedWithStatus:(BOOL)status
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     if (controller == nil || self.currentlyShowingNotification != controller.notification) {
         return;
     }
@@ -1658,7 +1658,7 @@ UIViewController *controller;
 
 - (void)connectToABTestDesigner:(BOOL)reconnect
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     if (self.abtestDesignerConnection && self.abtestDesignerConnection.connected) {
         MixpanelError(@"A/B test designer connection already exists");
     } else {

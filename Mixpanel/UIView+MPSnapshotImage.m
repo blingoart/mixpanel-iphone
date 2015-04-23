@@ -11,7 +11,7 @@
 - (UIImage *)mp_snapshotImage
 {
     UIImage *image;
-    #ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+    #ifndef MIXPANEL_NOSHAREDAPPLICATION
     CGFloat offsetHeight = 0.0f;
 
 
@@ -36,7 +36,7 @@
     [self.layer renderInContext:UIGraphicsGetCurrentContext()];
 #endif
 
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 #endif
     return image;

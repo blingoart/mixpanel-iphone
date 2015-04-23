@@ -417,7 +417,7 @@ static NSMapTable *originalCache;
 
 - (void)execute
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     // Block to execute on swizzle
     void (^executeBlock)(id, SEL) = ^(id view, SEL command){
 
@@ -475,7 +475,7 @@ static NSMapTable *originalCache;
 
 - (void)cacheOriginalImage:(id)view
 {
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     NSEnumerator *selectorEnum = [gettersForSetters keyEnumerator];
     SEL selector = nil, cacheSelector = nil;
     while((selector = (SEL)((__bridge void *)[selectorEnum nextObject]))) {

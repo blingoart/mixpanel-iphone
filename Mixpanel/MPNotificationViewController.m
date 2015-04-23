@@ -371,7 +371,7 @@
 - (UIView *)getTopView
 {
     UIView *topView = nil;
-#ifdef MIXPANEL_NOSHAREDAPPLICATION = 0
+#ifndef MIXPANEL_NOSHAREDAPPLICATION
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     if(window) {
         for (UIView *subview in window.subviews) {
